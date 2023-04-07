@@ -3,9 +3,9 @@ const employeeForm   = document.querySelector('#addForm')
 const employeeTable  = document.querySelector('#employees')
 
 // SET A COUNT VARIABLE TO DISPLAY NEXT TO EMPLOYEES HEADER
-let outputElement = document.querySelector('#employeeCount')
-let employeeCount = 0
-outputElement.textContent = ` ( ${employeeCount} )`
+let empCount = document.querySelector('#employeeCount')
+let count = 0
+empCount.textContent = ` ( ${count} )`
 
 // ADD EMPLOYEE
 employeeForm.addEventListener('submit', (e) => {
@@ -39,28 +39,27 @@ employeeForm.addEventListener('submit', (e) => {
 
     // CREATE THE DELETE BUTTON
     const deleteCell = newRow.insertCell(5)
-    deleteCell.innerHTML = '<button class="btn btn-danger btn-sm delete-btn">X</button>'
+    deleteCell.innerHTML = '<button class="btn btn-danger btn-sm delete-btn delete">X</button>'
 
     // RESET THE FORM
-    document.querySelector('#id').value = ''
-    document.querySelector('#name').value = ''
-    document.querySelector('#extension').value = ''
-    document.querySelector('#email').value = ''
-    document.querySelector('#department').value = ''
-
+    document.querySelector('#addForm').reset()
     // SET FOCUS BACK TO THE ID TEXT BOX
     document.querySelector('#id').focus()
+
     // INCREMENENT THE NUMBER OF EMPLOYEES IN THE TABLE
-    employeeCount++
-    outputElement.textContent = ` ( ${employeeCount} )`
+    count++
+    empCount.textContent = ` ( ${count} )`
 })
 
 // DELETE EMPLOYEE
 employeeTable.addEventListener('click', (e) => {
-      if (confirm('Are you sure you want to delete this employee?')) {
-        const row = e.target.parentElement.parentElement;
-        employeeTable.deleteRow(row.rowIndex);
-        employeeCount--;
-        outputElement.textContent = employeeCount;
-      }
-  });
+    if (e.target.classList.contains('delete')) {
+        if(confirm('Are you sure you want to delete this employee?')) {
+          // CALL THE DELETEROW() METHOD
+          // PASS THE ROWINDEX FOR THE TR (PARENTNOD.PARENTNODE)
+          employeeTable.deleteRow(e.target.parentElement.parentElement.rowIndex)
+          count--
+          empCount.textContent = ` ( ${count} )`
+        }
+    }
+})
